@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import axios from 'axios'
+import './App.css';
+import Nav from './components/Nav';
+import Cards from './components/Cards.jsx';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [characters, setCharacters] = useState([])
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+   const API_KEY = 'pi-hx-mferreyra'
+
+   function onSearch(id){
+      if(!id) alert('Ingresa por favor un ID')
+      if(characters.find(char => char.id === parseInt(id))) return alert (`Ya existe el personaje con ese id ${id}`)
+
+      axios(`https://rym2.up.railway.app/api/character/${id}?key=${API_KEY}`)
+      .then(({data})=>{
+         // console.log(data);
+         if(data.name){
+            setCharacters(oldChars => [...oldChars,data])
+         }
+         else {
+           alert( 'No hay personajes con ese ID')
+         }
+      })
+      .catch(err => console.log(err))
+   }
+
+   const onClose = (id)=> setCharacters(characters.filter(char => char.id !== parseInt(id))) 
+
+
+   return (
+      <div className='App'>
+         <Nav onSearch={onSearch}/>
+         <Cards characters={characters} onClose={onClose} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+   );
 }
 
-export default App
+export default App;
