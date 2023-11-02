@@ -1,14 +1,18 @@
 import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import axios from 'axios'
 import './App.css';
 import Nav from './components/Nav';
 import Cards from './components/Cards.jsx';
+import About from './components/About.jsx'
+import Detail from './components/Detail.jsx';
+import Error404 from './components/Error404.jsx';
 
 
 function App() {
   const [characters, setCharacters] = useState([])
 
-   const API_KEY = 'pi-hx-mferreyra'
+   const API_KEY = 'henrystaff'
 
    function onSearch(id){
       if(!id) alert('Ingresa por favor un ID')
@@ -33,7 +37,13 @@ function App() {
    return (
       <div className='App'>
          <Nav onSearch={onSearch}/>
-         <Cards characters={characters} onClose={onClose} />
+         <Routes>
+            <Route path='/home' element={<Cards characters={characters} onClose={onClose} />}/>
+            <Route path='/about' element={<About/>}/>
+            <Route path='/detail/:id' element={<Detail/>}/>
+            <Route path='*' element={<Error404/>}/>
+         </Routes>
+         
       </div>
    );
 }
