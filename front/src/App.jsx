@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import './App.css';
 import Nav from './components/Nav';
@@ -7,12 +7,22 @@ import Cards from './components/Cards.jsx';
 import About from './components/About.jsx'
 import Detail from './components/Detail.jsx';
 import Error404 from './components/Error404.jsx';
-
+import Form from './components/form/Form.jsx';
 
 function App() {
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+//   console.log(location);
   const [characters, setCharacters] = useState([])
+  const [access, setAccess] = useState(false)
 
    const API_KEY = 'henrystaff'
+   const EMAIL = 'auri@mail.com'
+   const PASSWORD = 'pass1234'
+
+   useEffect(()=>{
+      !access && navigate('/')
+   },[access])
 
    function onSearch(id){
       if(!id) alert('Ingresa por favor un ID')
@@ -33,11 +43,19 @@ function App() {
 
    const onClose = (id)=> setCharacters(characters.filter(char => char.id !== parseInt(id))) 
 
+   function login(userData){
+      if(userData.email === EMAIL && userData.password === PASSWORD){
+         setAccess(true)
+         navigate('/home')
+      }else alert('el email o la contraseña son incorrectas')
+   }
+
 
    return (
       <div className='App'>
-         <Nav onSearch={onSearch}/>
+        { pathname !== '/' &&  <Nav onSearch={onSearch}/> }
          <Routes>
+            <Route path='/' element={<Form login={login}/>}/>
             <Route path='/home' element={<Cards characters={characters} onClose={onClose} />}/>
             <Route path='/about' element={<About/>}/>
             <Route path='/detail/:id' element={<Detail/>}/>
