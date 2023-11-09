@@ -1,0 +1,33 @@
+.container{
+    border: ridge 5px #DB589B;
+    width: 22em;
+    margin: 0.5em;
+    border-radius:2em;
+    padding: 1em;
+    box-shadow: rgba(50, 67, 67, 0.50) 0px 5px 8px;
+    background-color: #e0625e9a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container button {
+    border: solid 1px #DB589B;
+    border-radius: 0.5em;
+    font-size: 1em;
+    color: #d63487;
+    transition: transform 0.3s ease;
+    background-color: rgba(240, 213, 227, 0.591);
+    width: 35px;
+    height: 35px;
+    margin-right:1em ;
+}
+
+.container button:hover {
+    transform: scale(1.3);
+}
+
+.container h2 {
+    margin: 0;
+}

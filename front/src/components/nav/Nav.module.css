@@ -1,0 +1,11 @@
+.nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: rgb(218, 218, 24);
+    padding:1em;
+    width:94vw;
+    margin: 1em;
+    border-radius: 2em;
+    box-sizing: border-box;
+}
