@@ -7,14 +7,11 @@ function Detail(){
     const [character, setCharacter] = useState({})
 
     // console.log(character);
-    const API_KEY = 'henrystaff'
 
     useEffect(()=>{
-        axios( `https://rym2.up.railway.app/api/character/${id}?key=${API_KEY}`)
-        .then(({ data })=>{
-            if(data.name) setCharacter(data)
-            else return alert('No hay personajes con ese ID')
-        })
+        axios( `http://localhost:3001/rickandmorty/character/${id}`)
+        .then(({ data })=> setCharacter(data) 
+        )
         return setCharacter({})
     },[id])
 

@@ -20,6 +20,7 @@ function App() {
   const API_KEY = "henrystaff";
   const EMAIL = "";
   const PASSWORD = "";
+  // const URL = `https://rym2.up.railway.app/api/character/${id}?key=${API_KEY}`
 
   // const EMAIL = 'auri@mail.com'
   // const PASSWORD = 'pass1234'
@@ -30,19 +31,11 @@ function App() {
 
   function onSearch(id) {
     if (!id) alert("Ingresa por favor un ID");
-    if (characters.find((char) => char.id === parseInt(id)))
-      return alert(`Ya existe el personaje con ese id ${id}`);
+    if (characters.find((char) => char.id === parseInt(id))) return alert(`Ya existe el personaje con ese id ${id}`);
 
-    axios(`https://rym2.up.railway.app/api/character/${id}?key=${API_KEY}`)
-      .then(({ data }) => {
-        // console.log(data);
-        if (data.name) {
-          setCharacters((oldChars) => [...oldChars, data]);
-        } else {
-          alert("No hay personajes con ese ID");
-        }
-      })
-      .catch((err) => console.log(err));
+    axios(`http://localhost:3001/rickandmorty/character/${id}`)
+      .then(({ data }) => setCharacters((oldChars) => [...oldChars, data]))
+      .catch((err) => alert(err.response.data.error));
   }
 
   const onClose = (id) =>
