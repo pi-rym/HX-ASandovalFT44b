@@ -17,35 +17,43 @@ function App() {
   const [characters, setCharacters] = useState([]);
   const [access, setAccess] = useState(false);
 
-  const API_KEY = "henrystaff";
-  const EMAIL = "";
-  const PASSWORD = "";
-  // const URL = `https://rym2.up.railway.app/api/character/${id}?key=${API_KEY}`
+  const URL = `http://localhost:3001/rickandmorty`
 
-  // const EMAIL = 'auri@mail.com'
-  // const PASSWORD = 'pass1234'
 
   useEffect(() => {
     !access && navigate("/");
   }, [access]);
 
-  function onSearch(id) {
+  async function onSearch(id) {
     if (!id) alert("Ingresa por favor un ID");
     if (characters.find((char) => char.id === parseInt(id))) return alert(`Ya existe el personaje con ese id ${id}`);
 
-    axios(`http://localhost:3001/rickandmorty/character/${id}`)
-      .then(({ data }) => setCharacters((oldChars) => [...oldChars, data]))
-      .catch((err) => alert(err.response.data.error));
+    try {
+      const {data} =  await axios.get(`${URL}/character/${id}`)
+
+      setCharacters(oldChars => [...oldChars, data])
+    } catch (error) {
+      // console.log(error.response.data);
+      alert(error.response.data);
+    }
   }
 
   const onClose = (id) =>
     setCharacters(characters.filter((char) => char.id !== parseInt(id)));
 
-  function login(userData) {
-    if (userData.email === EMAIL && userData.password === PASSWORD) {
-      setAccess(true);
-      navigate("/home");
-    } else alert("el email o la contraseña son incorrectas");
+  async function login(userData) {
+
+    try {
+      const { data } = await axios(`${URL}/login?email=${userData.email}&password=${userData.password}`)
+
+      const { access } = data
+
+      setAccess(access)
+      access && navigate('/home')
+    } catch (error) {
+      console.log(error.response.data.message);
+      alert(error.response.data.message);
+    }
   }
 
   return (
